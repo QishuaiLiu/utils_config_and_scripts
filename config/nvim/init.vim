@@ -11,6 +11,7 @@ set softtabstop=2
 set ignorecase
 set smartcase
 set notimeout
+set mouse=a
 
 let mapleader="\<space>"
 
