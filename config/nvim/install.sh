@@ -1,4 +1,4 @@
-#! /usr/bin/bash
+#! /bin/bash
 
 ## install nodejs and yarn
 curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
