@@ -30,9 +30,13 @@ call plug#begin('~/.config/nvim/plugged')
   " highlight
   Plug 'cateduo/vsdark.nvim'
 
+  " file finder
+  Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
+
   " file explorer
   Plug 'preservim/nerdtree'
-
+  Plug 'jackguo380/vim-lsp-cxx-highlight'
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
     " lsp
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -42,14 +46,45 @@ call plug#end()
 
 "============================ preservim/nerdtree
 nnoremap <LEADER>e :NERDTreeToggle<CR>
+" autocmd vimenter * NERDTree
+autocmd vimenter * if !argc()|NERDTree|endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-
+" ==== Yggdroot/LeaderF ====
+let g:Lf_WindowPosition='right'
+let g:Lf_PreviewInPopup=1
+let g:Lf_CommandMap = {
+\   '<C-p>': ['<C-k>'],
+\   '<C-k>': ['<C-p>'],
+\   '<C-j>': ['<C-n>']
+\}
+autocmd BufNewFile,BufRead X:/yourdir* let g:Lf_WildIgnore={'file':['*.o', '*.vcproj', '*.vcxproj'],'dir':[]}
+nmap <leader>f :Leaderf file<CR>
+nmap <leader>b :Leaderf! buffer<CR>
+nmap <leader>F :Leaderf rg<CR>
+let g:Lf_DevIconsFont = "DroidSansMono Nerd Font Mono"
 
 "============================ cateduo/vsdark.nvim
 set termguicolors
 let g:vsdark_style = "dark"
 colorscheme vsdark
 
+" ==== jackguo380/vim-lsp-cxx-highlight ====
+
+hi default link LspCxxHlSymFunction cxxFunction
+hi default link LspCxxHlSymFunctionParameter cxxParameter
+hi default link LspCxxHlSymFileVariableStatic cxxFileVariableStatic
+hi default link LspCxxHlSymStruct cxxStruct
+hi default link LspCxxHlSymStructField cxxStructField
+hi default link LspCxxHlSymFileTypeAlias cxxTypeAlias
+hi default link LspCxxHlSymClassField cxxStructField
+hi default link LspCxxHlSymEnum cxxEnum
+hi default link LspCxxHlSymVariableExtern cxxFileVariableStatic
+hi default link LspCxxHlSymVariable cxxVariable
+hi default link LspCxxHlSymMacro cxxMacro
+hi default link LspCxxHlSymEnumMember cxxEnumMember
+hi default link LspCxxHlSymParameter cxxParameter
+hi default link LspCxxHlSymClass cxxTypeAlias
 
 "=============================noeclide/coc.nvim
 " ==== neoclide/coc.nvim =====
@@ -82,7 +117,7 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1] =~# '\s'
 endfunction
 
-" <CR> to comfirm selected candidate
+" <CR> to confirm selected candidate
 " only when there's selected complete item
 if exists('*complete_info')
   inoremap <silent><expr> <CR> complete_info(['selected'])['selected'] != -1 ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -147,7 +182,7 @@ function! s:generate_compile_commands()
     execute 'silent !mkdir .vscode'
   endif
   execute '!cmake -DCMAKE_BUILD_TYPE=debug
-      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B .vscode'
+      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B build'
 endfunction
 command! -nargs=0 Gcmake :call s:generate_compile_commands()
 
