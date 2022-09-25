@@ -1,0 +1,13 @@
+FROM osrf/ros:humble-desktop
+RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
+RUN apt-get clean && apt update && apt upgrade -y
+RUN apt install -y \
+ros-humble-gazebo* \ 
+vim \
+git \
+xterm \
+wget \
+htop \
+build-essential \
+gdb valgrind && \
+apt clean 
