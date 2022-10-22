@@ -26,3 +26,4 @@ export STRIP=$TOOLCHINA/bin/aarch64-linux-android-strip
   --with-system-ffi \
   --without-ensurepip
 
+make
