@@ -21,7 +21,6 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
   au VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-
 "============================
 "=====plugin begin ==========
 "============================
@@ -40,6 +39,9 @@ call plug#begin('~/.config/nvim/plugged')
 
     " lsp
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  
+  " vim-clang-format
+  Plug 'rhysd/vim-clang-format'
 
 call plug#end()
 
@@ -58,7 +60,7 @@ let g:Lf_CommandMap = {
 \   '<C-k>': ['<C-p>'],
 \   '<C-j>': ['<C-n>']
 \}
-autocmd BufNewFile,BufRead X:/yourdir* let g:Lf_WildIgnore={'file':['*.o', '*.vcproj', '*.vcxproj'],'dir':[]}
+autocmd BufNewFile,BufRead X:/yourdir* let g:Lf_WildIgnore={'file':['*.o', '*.vcproj', '*.vcxproj'],'dir':['build*', 'devel*']}
 nmap <leader>f :Leaderf file<CR>
 nmap <leader>b :Leaderf! buffer<CR>
 nmap <leader>F :Leaderf rg<CR>
@@ -68,6 +70,9 @@ let g:Lf_DevIconsFont = "DroidSansMono Nerd Font Mono"
 set termguicolors
 let g:vsdark_style = "dark"
 colorscheme vsdark
+
+"============================clang-format
+autocmd FileType c ClangFormatAutoEnable
 
 " ==== jackguo380/vim-lsp-cxx-highlight ====
 
@@ -107,21 +112,26 @@ set signcolumn=number
 " <TAB> to select candidate forward or
 " pump completion candidate
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
 " <s-TAB> to select candidate backward
 inoremap <expr><s-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-function! s:check_back_space() abort
+function! s:CheckBackspace() abort
   let col = col('.')-1
   return !col || getline('.')[col - 1] =~# '\s'
 endfunction
 
+inoremap <silent><<expr> <c-o> coc#refresh()
 " <CR> to confirm selected candidate
 " only when there's selected complete item
-if exists('*complete_info')
-  inoremap <silent><expr> <CR> complete_info(['selected'])['selected'] != -1 ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+" if exists('*complete_info')
+"   inoremap <silent><expr> <CR> complete_info(['selected'])['selected'] != -1 ? "\<C-y>" : "\<C-g>u\<CR>"
+" endif
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 function! s:show_documentation()
