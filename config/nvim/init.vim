@@ -29,6 +29,10 @@ call plug#begin('~/.config/nvim/plugged')
   " highlight
   Plug 'cateduo/vsdark.nvim'
 
+  Plug 'tomtom/tcomment_vim'
+
+  Plug 'skywind3000/vim-terminal-help'
+
   " file finder
   Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 
@@ -43,7 +47,23 @@ call plug#begin('~/.config/nvim/plugged')
   " vim-clang-format
   Plug 'rhysd/vim-clang-format'
 
+  " vim color plugin
+  " Plug 'sainnhe/everforest'
+  Plug 'doums/darcula'
+  " gitlen 
+  Plug 'APZelos/blamer.nvim'
+
+
 call plug#end()
+
+
+"============================ tomtom/tcomment_vim
+
+let g:tcomment_textobject_inlinecomment = ''
+nmap <LEADER>cn g>c
+vmap <LEADER>cn g>
+nmap <LEADER>cu g<u
+vmap <LEADER>cu g<
 
 
 "============================ preservim/nerdtree
@@ -65,14 +85,40 @@ nmap <leader>f :Leaderf file<CR>
 nmap <leader>b :Leaderf! buffer<CR>
 nmap <leader>F :Leaderf rg<CR>
 let g:Lf_DevIconsFont = "DroidSansMono Nerd Font Mono"
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_PreviewInPopup = 1
+let g:Lf_ShowDevIcons = 0
+
+" "============================ fzf
+" nnoremap <leader>f :Files<CR>
+" nnoremap <leader>r :Rg<CR>
 
 "============================ cateduo/vsdark.nvim
-set termguicolors
-let g:vsdark_style = "dark"
-colorscheme vsdark
+" set termguicolors
+" let g:vsdark_style = "dark"
+" colorscheme vsdark
+" ===========================  sainnhe/everforest
+" set termguicolors
+" " set background = dark
+" let g:evergorest_background= 'dark'
+" let g:everforest_better_performance = 1
+" colorscheme everforest
 
+"============================ doums/darcula
+set termguicolors
+colorscheme darcula
 "============================clang-format
+autocmd FileType c, cpp nnoremap <buffer><Leader>cf :<C-u>ClangFormat <CR>
 autocmd FileType c ClangFormatAutoEnable
+
+"===== gitlen =============
+" g:GIT_LENS_CONFIG = {
+"     blame_prefix: '----', # default is four spaces
+"     blame_highlight: 'YourHighlight', # Comment
+"     blame_wrap: false, # blame text wrap
+" }
+"======= blamer ================
+let g:blamer_enabled = 1
 
 " ==== jackguo380/vim-lsp-cxx-highlight ====
 
