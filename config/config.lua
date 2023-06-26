@@ -19,12 +19,38 @@ local builtin = require('telescope/builtin')
 vim.keymap.set('n', '<C-p>', builtin.find_files, {})
 vim.keymap.set('n', '<C-s>', builtin.live_grep, {})
 
+lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
+lvim.builtin.telescope.defaults.initial_mode = "insert"
+lvim.builtin.telescope.defaults.layout_config.preview_cutoff = 120
+lvim.builtin.telescope.defaults.layout_config.prompt_position = "bottom"
+-- lvim.builtin.telescope.defaults.layout_config.width = 0.95
+-- lvim.builtin.telescope.defaults.layout_config.height = 0.95
+
+lvim.builtin.telescope.pickers = {
+    find_files = {
+        layout_config = {
+            width = 0.95,
+            height = 0.95,
+            preview_width = 0.6,
+        },
+    },
+    live_grep = {
+        layout_config = {
+            width = 0.95,
+            height = 0.95,
+            preview_width = 0.6,
+        },
+    },
+}
+
 -- lvim.colorscheme = "darcula"
-lvim.colorscheme = "gruvbox"
+lvim.colorscheme = "gruvbox-material"
+
 lvim.format_on_save = true
 
 lvim.plugins = {
     { "doums/darcula" },
     { "morhetz/gruvbox" },
+    { "sainnhe/gruvbox-material" },
     { "f-person/git-blame.nvim" },
 }
