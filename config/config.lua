@@ -26,6 +26,11 @@ lvim.builtin.telescope.defaults.layout_config.prompt_position = "bottom"
 -- lvim.builtin.telescope.defaults.layout_config.width = 0.95
 -- lvim.builtin.telescope.defaults.layout_config.height = 0.95
 
+-- toggleTerm
+lvim.builtin.terminal.open_mapping = "<C-\\>"
+lvim.builtin.terminal.direction = "vertical"
+lvim.builtin.terminal.size = 70
+
 lvim.builtin.telescope.pickers = {
     find_files = {
         layout_config = {
