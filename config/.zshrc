@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -8,8 +15,8 @@ export ZSH="/home/qishuai/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-#ZSH_THEME="bira"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -100,16 +107,17 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source /opt/ros/melodic/setup.zsh
+# source /opt/ros/noetic/setup.zsh
 export PATH=$PATH:/home/qishuai/clion-2021.1.2/bin:/home/qishuai/.local/bin
 export PATH_PLANNING_HOME=/home/qishuai/Documents/workspace_ws/simulation
 export PATH_PLANNING_HOME_1881=/home/qishuai/Documents/workspace_ws1881/simulation
 
-export PATH="/home/qishuai/Documents/workspace/simulation/ros_arm:$PATH"
+# export PATH="/home/qishuai/Documents/workspace/simulation/ros_arm:$PATH"
 # 
-export PATH=/usr/local/cuda-10.0/bin${PATH:+:${PATH}}
-export LD_LIBRARY_PATH=/usr/local/cuda-10.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 export CUDA_HOME=/usr/local/cuda
+export PATH=/usr/local/cuda-12.0/bin${PATH:+:${PATH}}:$CUDA_HOME/bin
+export LD_LIBRARY_PATH=/usr/local/cuda-12.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+#export CUDACXX=/usr/local/cuda-12.0/bin/nvcc
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH 
 
 export PATH="/opt/hisi-linux/x86-arm/aarch64-himix100-linux/bin:$PATH" 
@@ -128,3 +136,29 @@ alias vi="vi"
 alias vim="nvim"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# used in vim
+export FZF_DEFAULT_COMMAND='fdfind --follow -E ".git" -E "node_modules" . /etc /home'
+export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --bind=alt-j:down,alt-k:up,alt-i:toggle+down --border --preview "echo {} | ~/.fzf/fzf_preview.py" --preview-window=down'
+# Use ~~ as the trigger sequence instead of the default **
+#export FZF_COMPLETION_TRIGGER='~~'
+
+# used in shell
+_fzf_compgen_path() {
+  fdfind --hidden --follow -E ".git" -E "node_modules" . /etc /home
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fdfind --type d --hidden --follow -E ".git" -E "node_modules" . /etc /home
+}
+alias bat="batcat"
+
+# export ROS_DOMAIN_ID=60
+export LD_LIBRARY_PATH=/usr/local/share:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
+export NDK_HOME=/home/qishuai/android-ndk-r23c
+export THIRDPARTY_IN_PC_8450=/home/qishuai/Documents/workspace_ws_8450/thirdparty
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+eval `dircolors ~/.dir_colors/dircolors`
