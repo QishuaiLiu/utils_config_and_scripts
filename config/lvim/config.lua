@@ -20,8 +20,10 @@ require("user.telescope")
 -- dashboard
 require("user.dashboard")
 
--- nvimtree
-require("user.nvimtree")
+-- neotree
+lvim.builtin.nvimtree.active = false -- NOTE: using neo-tree
+require("user.neotree")
+
 
 -- lvim.colorscheme = "darcula"
 lvim.colorscheme = "gruvbox-material"
@@ -34,4 +36,13 @@ lvim.plugins = {
     { "sainnhe/gruvbox-material" },
     { "f-person/git-blame.nvim" },
     { "tpope/vim-surround" },
+    {
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v3.x",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+            "MunifTanjim/nui.nvim",
+        }
+    },
 }
