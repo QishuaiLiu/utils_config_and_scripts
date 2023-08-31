@@ -20,6 +20,9 @@ require("user.telescope")
 -- dashboard
 require("user.dashboard")
 
+-- nvimtree
+require("user.nvimtree")
+
 -- lvim.colorscheme = "darcula"
 lvim.colorscheme = "gruvbox-material"
 
