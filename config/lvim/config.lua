@@ -24,6 +24,10 @@ require("user.dashboard")
 lvim.builtin.nvimtree.active = false -- NOTE: using neo-tree
 require("user.neotree")
 
+-- markdown preview
+lvim.builtin.which_key.mappings["m"] = {
+    "<cmd>MarkdownPreview<CR>", "Explorer"
+}
 
 -- lvim.colorscheme = "darcula"
 lvim.colorscheme = "gruvbox-material"
@@ -44,5 +48,11 @@ lvim.plugins = {
             "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
             "MunifTanjim/nui.nvim",
         }
+    },
+    {
+        "iamcco/markdown-preview.nvim",
+        config = function()
+            vim.fn["mkdp#util#install"]()
+        end,
     },
 }
