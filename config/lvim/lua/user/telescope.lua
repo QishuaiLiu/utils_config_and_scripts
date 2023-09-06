@@ -11,6 +11,10 @@ lvim.builtin.which_key.mappings["sw"] = {
     "search file in buffers",
 }
 
+lvim.builtin.which_key.mappings["lc"] = {
+    "<cmd>Telescope lsp_document_symbols<CR>", "search file in buffers",
+}
+
 local builtin = require('telescope/builtin')
 vim.keymap.set('n', '<C-p>', builtin.find_files, { desc = "find files." })
 vim.keymap.set('n', '<C-s>', builtin.live_grep, { desc = "find words in whole project" })
