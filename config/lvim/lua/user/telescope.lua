@@ -12,7 +12,7 @@ lvim.builtin.which_key.mappings["sw"] = {
 }
 
 lvim.builtin.which_key.mappings["lc"] = {
-    "<cmd>Telescope lsp_document_symbols<CR>", "search file in buffers",
+    "<cmd>Telescope lsp_document_symbols<CR>", "search lsp symbols",
 }
 
 local builtin = require('telescope/builtin')
@@ -56,4 +56,11 @@ lvim.builtin.telescope.pickers = {
             preview_width = 0.6,
         },
     },
+    lsp_document_symbols = {
+        layout_config = {
+            width = 0.95,
+            height = 0.95,
+            preview_width = 0.6,
+        },
+    }
 }
