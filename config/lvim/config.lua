@@ -20,6 +20,9 @@ require("user.telescope")
 -- dashboard
 require("user.dashboard")
 
+-- project
+require("user.project")
+
 -- neotree
 lvim.builtin.nvimtree.active = false -- NOTE: using neo-tree
 require("user.neotree")
