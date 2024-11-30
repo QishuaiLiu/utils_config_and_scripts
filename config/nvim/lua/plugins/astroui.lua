@@ -11,6 +11,7 @@ return {
   ---@type AstroUIOpts
   opts = {
     -- change colorscheme
+    -- colorscheme = "vscode",
     colorscheme = "astrodark",
     -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
     highlights = {
