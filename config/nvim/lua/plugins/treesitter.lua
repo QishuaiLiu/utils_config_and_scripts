@@ -10,6 +10,7 @@ return {
       "lua",
       "vim",
       "cpp",
+      "cmake",
       -- add more arguments for adding more treesitter parsers
     },
   },

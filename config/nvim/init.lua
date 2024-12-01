@@ -6,11 +6,6 @@ if not (vim.env.LAZY or (vim.uv or vim.loop).fs_stat(lazypath)) then
   vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
 end
 vim.opt.rtp:prepend(lazypath)
-vim.opt.cmdheight = 2
-vim.opt.guifont = "monospace:h17"
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 2
-vim.opt.wrap = true
 
 -- validate that lazy is available
 if not pcall(require, "lazy") then
@@ -19,6 +14,15 @@ if not pcall(require, "lazy") then
   vim.fn.getchar()
   vim.cmd.quit()
 end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cpp",
+  callback = function()
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+  end,
+})
 
 require "lazy_setup"
 require "polish"
