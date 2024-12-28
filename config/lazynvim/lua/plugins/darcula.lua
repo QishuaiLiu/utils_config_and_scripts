@@ -1,14 +1,14 @@
-if true then
-  return {}
-end
+-- if true then
+--   return {}
+-- end
 return {
-  { "Mofiqul/dracula.nvim" },
+    { "Mofiqul/dracula.nvim" },
 
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "dracula",
+    {
+        "LazyVim/LazyVim",
+        opts = {
+            colorscheme = "dracula",
+        },
     },
-  },
-  enabled = false,
+    enabled = false,
 }
