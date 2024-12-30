@@ -1,23 +1,34 @@
 return {
-    "stevearc/conform.nvim",
-    opts = {
-        log_level = vim.log.levels.DEBUG,
-        formaters = {
-            ["clang-format"] = {
-                command = "clang-format",
-                append_args = { "--style=file" },
-            },
-        },
-        formatters_by_ft = {
-            lua = { "lua_ls" },
-            python = { "black" },
-            rust = { "rustfmt" },
-            html = { "prettier" },
-            c = { "clang-format" },
-            cpp = { "clang-format" },
-            cmake = { "cmake-format" },
-        },
+  "stevearc/conform.nvim",
+  opts = {
+    log_level = vim.log.levels.DEBUG,
+    formaters = {
+      ["clang-format"] = {
+        command = "clang-format",
+        append_args = { "--style=file" },
+        -- args = function(ctx)
+        --   if ctx.range then
+        --     local start_line, end_line = ctx.range.start_line[1], ctx.range.["end"][1]
+        --     return { "--style=file",
+        --       string.format("--lines=%d:%d", start_line, end_line),
+        --     }
+        --   else
+        --     return { "--style=file" }
+        --   end
+        -- end,
+        -- stdin = true,
+      },
     },
+    formatters_by_ft = {
+      lua = { "lua_ls" },
+      python = { "black" },
+      rust = { "rustfmt" },
+      html = { "prettier" },
+      c = { "clang-format" },
+      cpp = { "clang-format" },
+      cmake = { "cmake-format" },
+    },
+  },
 }
 
 -- return { -- Autoformat
