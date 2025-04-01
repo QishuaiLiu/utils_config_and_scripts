@@ -6,7 +6,7 @@ return {
             ["clang-format"] = {
                 command = "clang-format",
                 append_args = { "--style=file",
-                    "--sort-includes=1" },
+                    "--sort-includes=0" },
                 -- args = function(ctx)
                 --   if ctx.range then
                 --     local start_line, end_line = ctx.range.start_line[1], ctx.range.["end"][1]
