@@ -2,11 +2,12 @@ return {
     "stevearc/conform.nvim",
     opts = {
         log_level = vim.log.levels.DEBUG,
-        formaters = {
+        formatters = {
             ["clang-format"] = {
                 command = "clang-format",
-                append_args = { "--style=file",
-                    "--sort-includes=0" },
+                args = {
+                    "--style=file",
+                },
                 -- args = function(ctx)
                 --   if ctx.range then
                 --     local start_line, end_line = ctx.range.start_line[1], ctx.range.["end"][1]

@@ -11,6 +11,7 @@ return {
         inlay_hints = { enabled = false },
         servers = {
             clangd = {
+                cmd = { "clangd", "--header-insertion=never" },
                 on_attach = function(client, bufnr)
                     -- Disable LSP formatting to avoid conflicts with conform.nvim
                     client.server_capabilities.documentFormattingProvider = false
