@@ -3,16 +3,16 @@
 -- Add any additional keymaps here
 local map = vim.keymap.set
 
-map(
-  "n",
-  "<leader>/",
-  '<cmd>lua require("Comment.api").toggle.linewise.current()<CR>',
-  { desc = "Toggle comment on current line" }
-)
+-- map(
+--   "n",
+--   "<leader>/",
+--   '<cmd>lua require("Comment.api").toggle.linewise.current()<CR>',
+--   { desc = "Toggle comment on current line" }
+-- )
 
-map(
-  "x",
-  "<leader>/",
-  '<esc><cmd>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
-  { desc = "Toggle comment on selection" }
-)
+-- map(
+--   "x",
+--   "<leader>/",
+--   '<esc><cmd>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
+--   { desc = "Toggle comment on selection" }
+-- )
