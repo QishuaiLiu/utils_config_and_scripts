@@ -7,6 +7,8 @@ return {
                 command = "clang-format",
                 args = {
                     "--style=file",
+                    "--assume-filename",
+                    "$FILENAME",
                 },
                 -- args = function(ctx)
                 --   if ctx.range then
