@@ -3,7 +3,7 @@ return {
     opts = {
         log_level = vim.log.levels.DEBUG,
         formatters = {
-            ["clang-format"] = {
+            clang_format = {
                 command = "clang-format",
                 args = {
                     "--style=file",
@@ -38,8 +38,9 @@ return {
             python = { "black" },
             rust = { "rustfmt" },
             html = { "prettier" },
-            c = { "clang-format" },
-            cpp = { "clang-format" },
+            c = { "clang_format" },
+            cpp = { "clang_format" },
+            cuda = { "clang_format" },
             cmake = { "cmake-format" },
         },
     },
@@ -143,6 +144,7 @@ return {
 --         fish = { "fish_indent" },
 --         sh = { "shfmt" },
 --         cpp = { "clang_format" },
+--         cuda = { "clang_format" },
 --         cmake = { "cmake_format" },
 --       },
 --

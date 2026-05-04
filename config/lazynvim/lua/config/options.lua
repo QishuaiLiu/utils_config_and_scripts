@@ -6,5 +6,6 @@ vim.opt.wrap = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 2
 -- vim.lsp.set_log_level("off")
-vim.g.format_enabled = false
+vim.g.autoformat = true
+vim.g.format_enabled = true
 vim.opt.jumpoptions = "stack"
