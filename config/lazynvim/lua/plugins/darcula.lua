@@ -2,7 +2,13 @@
 --     return {}
 -- end
 return {
-    { "Mofiqul/dracula.nvim" },
+    {
+        "Mofiqul/dracula.nvim",
+        opts = {
+            -- Let the terminal's transparency show through Neovim.
+            transparent_bg = true,
+        },
+    },
 
     {
         "LazyVim/LazyVim",
