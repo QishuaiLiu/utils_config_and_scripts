@@ -1,6 +1,3 @@
--- if true then
---     return {}
--- end
 return {
     {
         "Mofiqul/dracula.nvim",
@@ -16,5 +13,4 @@ return {
             colorscheme = "dracula",
         },
     },
-    enabled = false,
 }

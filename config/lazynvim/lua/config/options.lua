@@ -4,8 +4,8 @@
 vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd", "compile_commands.json" }
 vim.opt.wrap = true
 vim.opt.shiftwidth = 4
-vim.opt.tabstop = 2
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
 -- vim.lsp.set_log_level("off")
 vim.g.autoformat = true
-vim.g.format_enabled = true
 vim.opt.jumpoptions = "stack"
