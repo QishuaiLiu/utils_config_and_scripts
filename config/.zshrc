@@ -6,13 +6,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH="/home/qishuai/.oh-my-zsh"
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
+# load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
@@ -31,14 +31,13 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -53,8 +52,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
-# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -93,72 +93,75 @@ source $ZSH/oh-my-zsh.sh
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+#   export EDITOR='nvim'
 # fi
+export PATH=/usr/local/bin/nvim-linux-x86_64/bin:$PATH
+alias s=tmux
+alias vim=nvim
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# export ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-# source /opt/ros/noetic/setup.zsh
-export PATH=$PATH:/home/qishuai/clion-2021.1.2/bin:/home/qishuai/.local/bin
-export PATH_PLANNING_HOME=/home/qishuai/Documents/workspace_ws/simulation
-export PATH_PLANNING_HOME_1881=/home/qishuai/Documents/workspace_ws1881/simulation
-
-# export PATH="/home/qishuai/Documents/workspace/simulation/ros_arm:$PATH"
-# 
-export CUDA_HOME=/usr/local/cuda
-export PATH=/usr/local/cuda-12.0/bin${PATH:+:${PATH}}:$CUDA_HOME/bin
-export LD_LIBRARY_PATH=/usr/local/cuda-12.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-#export CUDACXX=/usr/local/cuda-12.0/bin/nvcc
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH 
-
-export PATH="/opt/hisi-linux/x86-arm/aarch64-himix100-linux/bin:$PATH" 
-export PATH="/opt/hisi-linux/x86-arm/gcc-arm-none-eabi-4_9-2015q3/bin:$PATH" 
-alias s="tmux"
-
-export GUROBI_HOME="/home/qishuai/Documents/gurobi951/linux64"
-export PATH="${PATH}:${GUROBI_HOME}/bin"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
-
-export THIRDPARTY_IN_PC_1881="$PATH_PLANNING_HOME_1881/third_party_1881"
-export LC1881_TOOLCHAIN_PATH="$PATH_PLANNING_HOME_1881/1881tools/arm64-v8a"
-export PATH="/home/qishuai/Documents/library/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04/bin":$PATH
-
-alias vi="vi"
-alias vim="nvim"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# used in vim
-export FZF_DEFAULT_COMMAND='fdfind --follow -E ".git" -E "node_modules" . /etc /home'
-export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --bind=alt-j:down,alt-k:up,alt-i:toggle+down --border --preview "echo {} | ~/.fzf/fzf_preview.py" --preview-window=down'
-# Use ~~ as the trigger sequence instead of the default **
-#export FZF_COMPLETION_TRIGGER='~~'
-
-# used in shell
-_fzf_compgen_path() {
-  fdfind --hidden --follow -E ".git" -E "node_modules" . /etc /home
-}
-
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fdfind --type d --hidden --follow -E ".git" -E "node_modules" . /etc /home
-}
-alias bat="batcat"
-
-# export ROS_DOMAIN_ID=60
-export LD_LIBRARY_PATH=/usr/local/share:${LD_LIBRARY_PATH}
-export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
-export NDK_HOME=/home/qishuai/android-ndk-r23c
-export THIRDPARTY_IN_PC_8450=/home/qishuai/Documents/workspace_ws_8450/thirdparty
+export PATH=$PATH:/usr/local/cuda-12.9/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-12.9/lib64
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-eval `dircolors ~/.dir_colors/dircolors`
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source /opt/ros/humble/setup.zsh
+
+##########################
+export PAHT=/opt/openrobots/bin:$PATH
+export PKG_CONFIG_PATH=/opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=/opt/openrobots/lib:$LD_LIBRARY_PATH
+export PYTHONPATH=/opt/openrobots/lib/python3.10/site-packages:$PYTHONPATH
+export CMAKE_PREFIX_PATH=/opt/openrobots:$CMAKE_PREFIX_PATH
+##########################
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/qishuai/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/qishuai/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/qishuai/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/qishuai/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+conda config --set auto_activate false
+export LD_LIBRARY_PATH=~/Documents/locomotion/DWMPC/third_party/acados/lib:$LD_LIBRARY_PATH
+export PATH=/opt/openrobots/bin:$PATH
+export PKG_CONFIG_PATH=/opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=/opt/openrobots/lib:$LD_LIBRARY_PATH
+export PYTHONPATH=/opt/openrobots/lib/python3.10/site-packages:$PYTHONPATH # Adapt your desired python version here
+export CMAKE_PREFIX_PATH=/opt/openrobots:$CMAKE_PREFIX_PATH
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/zsh_completion" ] && \. "$NVM_DIR/zsh_completion"  # This loads nvm zsh_completion
+
+# Reset terminal cursor to blinking vertical bar before each prompt.
+autoload -Uz add-zsh-hook
+
+set_cursor_bar() {
+  printf '\e[5 q'
+}
+
+add-zsh-hook precmd set_cursor_bar
+
