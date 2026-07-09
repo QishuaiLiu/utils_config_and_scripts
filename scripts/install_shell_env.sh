@@ -8,7 +8,8 @@
 #   3. zsh-autosuggestions plugin (enabled in ~/.zshrc)
 #   4. tmux
 #   5. tpm - tmux plugin manager (with a minimal ~/.tmux.conf)
-#   6. Set zsh as the default login shell.
+#   6. fzf - fuzzy finder with zsh key bindings + completion
+#   7. Set zsh as the default login shell.
 #
 # Usage:
 #   chmod +x install_shell_env.sh
@@ -32,6 +33,8 @@ ZSH_DIR="${HOME}/.oh-my-zsh"
 ZSH_CUSTOM="${ZSH_CUSTOM:-${ZSH_DIR}/custom}"
 ZSHRC="${HOME}/.zshrc"
 TPM_DIR="${HOME}/.tmux/plugins/tpm"
+FZF_DIR="${HOME}/.fzf"
+FZF_ZSH="${HOME}/.fzf.zsh"
 TMUX_CONF="${HOME}/.tmux.conf"
 TMUX_CONF_SRC="${REPO_CONFIG_DIR:+${REPO_CONFIG_DIR}/.tmux.conf}"
 
@@ -179,7 +182,37 @@ install_tpm() {
 }
 
 # ----------------------------------------------------------------------------
-# 5. Make zsh the default shell
+# 6. fzf (fuzzy finder) + zsh key bindings & completion
+# ----------------------------------------------------------------------------
+install_fzf() {
+  # Install from the official git repo rather than apt: this pulls a current
+  # release on any Ubuntu version and ships the `install` script that generates
+  # the shell-integration file (~/.fzf.zsh).
+  if [[ -d "${FZF_DIR}/.git" ]]; then
+    ok "fzf already present at ${FZF_DIR} — skipping clone."
+  else
+    info "Cloning fzf..."
+    git clone --depth 1 https://github.com/junegunn/fzf.git "${FZF_DIR}"
+  fi
+
+  # Build the binary and generate ~/.fzf.zsh (key bindings + completion).
+  # --no-update-rc: we wire ~/.zshrc ourselves below, idempotently.
+  info "Running fzf installer (key bindings + completion)..."
+  "${FZF_DIR}/install" --key-bindings --completion --no-update-rc --no-bash --no-fish
+
+  # Source the integration file from ~/.zshrc, matching the autosuggestions step.
+  [[ -f "${ZSHRC}" ]] || { warn "No ${ZSHRC} found; cannot enable fzf automatically."; return 0; }
+
+  if grep -q '\.fzf\.zsh' "${ZSHRC}"; then
+    ok "fzf already sourced in ${ZSHRC}."
+  else
+    printf '\n[ -f %s ] && source %s\n' "${FZF_ZSH}" "${FZF_ZSH}" >> "${ZSHRC}"
+    ok "Added fzf source line to ${ZSHRC}."
+  fi
+}
+
+# ----------------------------------------------------------------------------
+# 7. Make zsh the default shell
 # ----------------------------------------------------------------------------
 set_default_shell() {
   local zsh_path
@@ -206,6 +239,7 @@ main() {
   install_oh_my_zsh
   install_autosuggestions
   install_tpm
+  install_fzf
   set_default_shell
 
   echo
@@ -213,6 +247,7 @@ main() {
   echo "  • Start zsh now with:   exec zsh   (or log out and back in)"
   echo "  • Inside tmux, press:   <prefix> + I   to install the tmux plugins"
   echo "    (default prefix is Ctrl-b, so Ctrl-b then Shift-i)"
+  echo "  • fzf: Ctrl-R (history), Ctrl-T (files), Alt-C (cd) in zsh"
 }
 
 main "$@"
