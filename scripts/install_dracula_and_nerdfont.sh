@@ -51,6 +51,14 @@ require_cmds() {
   fi
 }
 
+# True if fontconfig knows FONT_FAMILY. Queries fontconfig directly instead of
+# `fc-list | grep -q`: under `set -o pipefail`, grep -q exits on the first
+# match and fc-list can die of SIGPIPE (exit 141), failing the check even
+# though the font is installed.
+font_installed() {
+  [[ -n "$(fc-list "${FONT_FAMILY}" family 2>/dev/null)" ]]
+}
+
 # ----------------------------------------------------------------------------
 # 0. Sanity check: Ubuntu version
 # ----------------------------------------------------------------------------
@@ -70,42 +78,41 @@ fi
 install_nerd_font() {
   info "Installing '${FONT_FAMILY}' (Nerd Font ${NERD_FONT_VERSION})..."
 
-  if fc-list 2>/dev/null | grep -qi "JetBrainsMono Nerd Font Mono"; then
-    ok "JetBrainsMono Nerd Font Mono already installed — skipping download."
+  if font_installed; then
+    ok "${FONT_FAMILY} already installed — skipping download."
     return 0
   fi
 
-  require_cmds curl unzip fc-cache=fontconfig
+  require_cmds curl tar xz=xz-utils fc-cache=fontconfig
 
-  local tmp url zip
+  # The .tar.xz release asset holds the same fonts as the .zip but is ~20x
+  # smaller (~6 MB vs ~123 MB for JetBrainsMono v3.4.0), since xz compresses
+  # across the near-identical font files instead of one file at a time.
+  local tmp url archive
   tmp="$(mktemp -d)"
-  url="https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONT_VERSION}/${NERD_FONT_NAME}.zip"
-  zip="${tmp}/${NERD_FONT_NAME}.zip"
+  url="https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONT_VERSION}/${NERD_FONT_NAME}.tar.xz"
+  archive="${tmp}/${NERD_FONT_NAME}.tar.xz"
 
   info "Downloading ${url}"
-  curl -fL --retry 3 -o "${zip}" "${url}"
+  curl -fL --retry 3 -o "${archive}" "${url}"
 
   mkdir -p "${FONT_DIR}"
   info "Extracting fonts to ${FONT_DIR}"
-  # Only extract the actual font files (skip README/LICENSE). A release may
-  # ship .ttf only or .otf only, so a non-matching pattern makes unzip exit
-  # with code 11 ("no matching files"); that is not fatal here — the fontconfig
-  # check below is the real success gate.
-  local rc=0
-  unzip -o -j "${zip}" '*.ttf' '*.otf' -d "${FONT_DIR}" >/dev/null || rc=$?
-  if (( rc != 0 && rc != 11 )); then
-    err "unzip failed with exit code ${rc}."
-    return 1
-  fi
+  # Extract to a scratch dir, then copy only the font files (skip
+  # README/LICENSE). The fontconfig check below is the real success gate.
+  mkdir -p "${tmp}/extract"
+  tar -xJf "${archive}" -C "${tmp}/extract"
+  find "${tmp}/extract" -type f \( -iname '*.ttf' -o -iname '*.otf' \) \
+    -exec cp -f {} "${FONT_DIR}/" \;
   rm -rf "${tmp}"
 
   info "Rebuilding font cache..."
   fc-cache -f "${FONT_DIR}" >/dev/null
 
-  if fc-list | grep -qi "JetBrainsMono Nerd Font Mono"; then
-    ok "Font installed: $(fc-list | grep -i 'JetBrainsMono Nerd Font Mono' | head -1 | cut -d: -f2 | xargs)"
+  if font_installed; then
+    ok "Font installed: ${FONT_FAMILY}"
   else
-    err "Font files extracted but 'JetBrainsMono Nerd Font Mono' not detected by fontconfig."
+    err "Font files extracted but '${FONT_FAMILY}' not detected by fontconfig."
     return 1
   fi
 }
