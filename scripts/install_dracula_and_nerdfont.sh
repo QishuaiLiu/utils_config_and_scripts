@@ -3,7 +3,8 @@
 # install_dracula_and_nerdfont.sh
 #
 # Quick setup for a freshly installed Ubuntu 22.04 / 24.04 system:
-#   1. Install the "JetBrainsMono Nerd Font Mono" (patched Nerd Font).
+#   1. Install the "JetBrainsMono Nerd Font Mono" (patched Nerd Font),
+#      plus fonts-noto-core as a fallback for symbols it lacks (e.g. '⏵').
 #   2. Install and apply the Dracula theme for GNOME Terminal.
 #
 # Usage:
@@ -118,6 +119,24 @@ install_nerd_font() {
 }
 
 # ----------------------------------------------------------------------------
+# 1b. Install a fallback font for symbols the Nerd Font lacks
+# ----------------------------------------------------------------------------
+# JetBrainsMono (like most Nerd Fonts) has no glyph for U+23F5 '⏵', which
+# Claude Code's mode indicator uses ("⏵⏵ auto mode on"), so it renders as a
+# box. fonts-noto-core ships Noto Sans Symbols2, which fontconfig uses as a
+# per-glyph fallback while the terminal keeps the Nerd Font for everything else.
+install_symbol_fallback_font() {
+  if [[ -n "$(fc-list ':charset=23f5' family 2>/dev/null)" ]]; then
+    ok "A font covering U+23F5 is already installed — skipping fonts-noto-core."
+    return 0
+  fi
+
+  info "Installing fonts-noto-core (symbol fallback for glyphs like '⏵')..."
+  sudo apt-get install -y fonts-noto-core
+  ok "Symbol fallback font installed."
+}
+
+# ----------------------------------------------------------------------------
 # 2. Install Dracula theme for GNOME Terminal
 # ----------------------------------------------------------------------------
 install_dracula_gnome_terminal() {
@@ -197,6 +216,7 @@ set_terminal_font() {
 # ----------------------------------------------------------------------------
 main() {
   install_nerd_font
+  install_symbol_fallback_font
   install_dracula_gnome_terminal
   set_terminal_font
 
